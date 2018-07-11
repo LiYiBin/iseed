@@ -2084,11 +2084,19 @@ class IseedTest extends PHPUnit_Framework_TestCase
                         'id' => '505',
                         'time' => '2013-10-18 14:31:24',
                     ),
-                )));
+                ),
+            ),
+            'namespace' => array(
+                'content' => $this->readStubFile(static::$testStubsDir . '/seed_namespace.stub'),
+                'namespace' => 'Seeds\\Test',
+                'data' => array(),
+            ),
+        );
 
         $iSeed = new Orangehill\Iseed\Iseed();
         foreach ($testStubs as $key => $stub) {
-            $output = $iSeed->populateStub('test_class', $productionStub, 'test_table', $stub['data'], 500);
+            $namespace = isset($stub['namespace']) ? $stub['namespace'] : null;
+            $output = $iSeed->populateStub('test_class', $productionStub, 'test_table', $stub['data'], 500, null, null, true, $namespace);
             $this->assertEquals($stub['content'], $output, "Stub {$key} is not what it's expected to be.");
         }
 
